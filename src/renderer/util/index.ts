@@ -1,0 +1,1 @@
+export { createSvgIcon } from "./createSvgIcon";
