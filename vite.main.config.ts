@@ -8,4 +8,12 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  plugins: [
+    {
+      name: "restart",
+      closeBundle() {
+        process.stdin.emit("data", "rs");
+      },
+    },
+  ],
 });

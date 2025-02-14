@@ -25,7 +25,7 @@ import {
   Visibility,
   VisibilityOff,
 } from "../icon";
-import { CommonEventName } from "@/common/constant";
+import { CommonEventName, PurchasingEventName } from "@/common/constant";
 
 interface IProcessRequirement {
   password: string;
@@ -49,6 +49,7 @@ export function Dashboard() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [isSubmitted, setIsSubmitted] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
     setIsError(false);
@@ -111,6 +112,7 @@ export function Dashboard() {
 
   const startProcess = () => {
     setIsSubmitted(true);
+    setIsLoading(true);
     if (!password || !email || !xlsxPath || !chromePath || !chromeProfilePath) {
       setIsError(true);
       return;
@@ -129,7 +131,11 @@ export function Dashboard() {
       window.localStorage.setItem(key, JSON.stringify(requirement[key]));
     });
 
-    console.log(requirement);
+    window[PurchasingEventName.EVENT_NAME].startProcess(requirement);
+    window[PurchasingEventName.EVENT_NAME].endProcess((args: any) => {
+      console.log(args);
+      setIsLoading(false);
+    });
   };
 
   const minLength = 12;
@@ -192,6 +198,7 @@ export function Dashboard() {
             type="text"
             placeholder="Nhập tên đăng nhập tại đây…"
             startDecorator={<Person />}
+            disabled={isLoading}
             value={email}
             error={isSubmitted && email === ""}
             onChange={(event) => setEmail(event.target.value)}
@@ -210,6 +217,7 @@ export function Dashboard() {
             sx={{ "--Input-decoratorChildHeight": "40px" }}
             type={showPassword ? "text" : "password"}
             placeholder="Nhập mật khẩu tại đây…"
+            disabled={isLoading}
             startDecorator={<Key />}
             endDecorator={
               <IconButton
@@ -267,6 +275,7 @@ export function Dashboard() {
             value={xlsxPath}
             error={isSubmitted && xlsxPath === ""}
             onChange={(event) => setXlsxPath(event.target.value)}
+            disabled={isLoading}
             endDecorator={
               <Button
                 variant="solid"
@@ -296,6 +305,7 @@ export function Dashboard() {
             required
             value={resultPath}
             onChange={(event) => setResultPath(event.target.value)}
+            disabled={isLoading}
             endDecorator={
               <Button
                 variant="solid"
@@ -328,6 +338,7 @@ export function Dashboard() {
             value={chromePath}
             error={isSubmitted && chromePath === ""}
             onChange={(event) => setChromePath(event.target.value)}
+            disabled={isLoading}
             endDecorator={
               <Button
                 variant="solid"
@@ -358,6 +369,7 @@ export function Dashboard() {
             value={chromeProfilePath}
             error={isSubmitted && chromeProfilePath === ""}
             onChange={(event) => setChromeProfilePath(event.target.value)}
+            disabled={isLoading}
             endDecorator={
               <Button
                 variant="solid"
@@ -379,6 +391,7 @@ export function Dashboard() {
           label="Chạy nền"
           checked={isRunInBackground}
           onChange={handleRunInBackground}
+          disabled={isLoading}
         />
       </Card>
 
@@ -388,6 +401,7 @@ export function Dashboard() {
         startDecorator={<PlayArrow />}
         sx={{ height: 60, fontSize: 15 }}
         onClick={startProcess}
+        loading={isLoading}
       >
         Bắt đầu
       </Button>
