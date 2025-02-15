@@ -1,4 +1,4 @@
-import { CommonEventName } from "@/common/constant/event";
+import { CommonEventName } from "@/common/constant/event.constant";
 import { BrowserWindow, dialog, ipcMain } from "electron";
 
 export class CommonEvent {
