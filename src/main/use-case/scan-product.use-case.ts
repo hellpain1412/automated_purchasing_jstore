@@ -2,10 +2,15 @@ import { DETAIL_URL, SEARCH_URL } from "@/common/constant";
 import { net } from "electron";
 import * as cheerio from "cheerio";
 
-interface Product {
-  name: string;
-  url: string;
-  price: string;
+export interface Product {
+  id?: string;
+  name?: string;
+  url?: string;
+  price?: string;
+  productId?: string;
+  link?: string;
+  status?: string;
+  buyAt?: Date;
 }
 
 export class ScanProductUseCase {
@@ -29,7 +34,7 @@ export class ScanProductUseCase {
         products.push({
           name: name ? name.text() : "",
           url: name ? DETAIL_URL + name.attr("href") : "",
-          price: price ? price.text() : "",
+          price: price ? price.text()?.match(/\d+/g)?.join("") : "",
         });
       });
     } catch (error) {

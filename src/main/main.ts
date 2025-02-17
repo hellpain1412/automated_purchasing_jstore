@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, shell } from "electron";
 import path from "node:path";
 import started from "electron-squirrel-startup";
 import { initActions } from "./init";
@@ -17,8 +17,14 @@ const createWindow = () => {
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
+      devTools: false,
     },
   });
+
+  // mainWindow.webContents.on("devtools-open-url", function (e, url) {
+  //   e.preventDefault();
+  //   require("electron").shell.openExternal(url);
+  // });
 
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
@@ -31,6 +37,7 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+
   initActions(mainWindow);
 };
 
