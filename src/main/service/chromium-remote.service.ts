@@ -251,7 +251,6 @@ export class ChromiumCrawlService {
       }
     } catch (error) {
       console.log(error);
-      throw error;
     } finally {
       await page?.close();
     }

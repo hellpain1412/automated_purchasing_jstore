@@ -103,12 +103,10 @@ export class ErSportsDomainService {
           }
         }
       }
-
-      await this.chromeBrowser.endTask();
     } catch (error) {
-      await this.chromeBrowser.endTask();
       console.log(error);
     } finally {
+      await this.chromeBrowser.endTask();
       this.event.reply(PurchasingEventName.END_PROCESS, products);
     }
   }
