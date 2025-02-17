@@ -112,9 +112,7 @@ export class ErSportsDomainService {
   }
 
   logError(error: Error) {
-    const errorMessage = `[${new Date().toISOString()}] ${
-      error.stack || error
-    }\n`;
+    const errorMessage = `[${new Date().toISOString()}] ${error}\n`;
 
     fs.appendFile(
       this.resultInfo.resultPath + "/errors.log",
