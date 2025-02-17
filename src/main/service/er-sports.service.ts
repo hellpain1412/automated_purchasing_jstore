@@ -5,6 +5,7 @@ import { XlsxHandlerService } from "./xlsx.service";
 import { v4 as uuidv4 } from "uuid";
 import { DateTimeUtil } from "../util";
 import { ipcMain } from "electron";
+import * as fs from "fs";
 
 interface LoginInfo {
   password: string;
@@ -92,6 +93,7 @@ export class ErSportsDomainService {
             });
             doneProducts.push(product.productId);
           } catch (error) {
+            this.logError(error);
             console.log(error);
             this.event.reply(PurchasingEventName.STATUS, {
               productId: product.productId,
@@ -109,6 +111,20 @@ export class ErSportsDomainService {
     } finally {
       this.event.reply(PurchasingEventName.END_PROCESS, products);
     }
+  }
+
+  logError(error: Error) {
+    const errorMessage = `[${new Date().toISOString()}] ${
+      error.stack || error
+    }\n`;
+
+    fs.appendFile(
+      this.resultInfo.resultPath + "/errors.log",
+      errorMessage,
+      (err) => {
+        if (err) console.error("Lỗi khi ghi vào file:", err);
+      }
+    ); // Ghi đè file cũ
   }
 
   readXlSX() {

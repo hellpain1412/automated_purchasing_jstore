@@ -1,6 +1,7 @@
 import * as playwright from "playwright-core";
 import { DateTimeUtil } from "../util/date-time.util";
 import { Product } from "../use-case";
+import * as fs from "fs";
 
 export class ChromiumCrawlService {
   private context: playwright.BrowserContext | undefined;
@@ -90,7 +91,7 @@ export class ChromiumCrawlService {
           state: "visible",
         });
         await loginButton.evaluate((el: HTMLElement) => el.click());
-        await DateTimeUtil.delayRange(1000, 1800);
+        await DateTimeUtil.delayRange(1500, 2000);
         await this.page?.waitForLoadState("domcontentloaded");
       }
 
@@ -178,7 +179,7 @@ export class ChromiumCrawlService {
             state: "visible",
           });
           await loginButton.evaluate((el: HTMLElement) => el.click());
-          await DateTimeUtil.delayRange(1000, 1800);
+          await DateTimeUtil.delayRange(1500, 1800);
           await page?.waitForLoadState("domcontentloaded");
         }
 
@@ -245,7 +246,7 @@ export class ChromiumCrawlService {
           state: "visible",
         });
         await nextButton_2.evaluate((el: HTMLElement) => el.click());
-        await DateTimeUtil.delayRange(800, 1500);
+        await DateTimeUtil.delayRange(1100, 2000);
         await page?.waitForLoadState("domcontentloaded");
       } else {
         await page?.close();
