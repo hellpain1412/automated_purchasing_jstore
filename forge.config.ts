@@ -15,7 +15,7 @@ const config: ForgeConfig = {
   makers: [
     new MakerSquirrel({
       name: "Automated Purchasing JStore",
-      setupIcon: "./src/assets/icon.ico",
+      setupIcon: "./asset/icon/logo.ico",
     }),
     new MakerZIP({}, ["darwin"]),
     new MakerRpm({}),
