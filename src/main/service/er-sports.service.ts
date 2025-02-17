@@ -82,11 +82,11 @@ export class ErSportsDomainService {
 
             await DateTimeUtil.delayRange(1000, 2000);
 
-            // await this.purchasingProduct(
-            //   product,
-            //   this.userInfo.email,
-            //   this.userInfo.password
-            // );
+            await this.purchasingProduct(
+              product,
+              this.userInfo.email,
+              this.userInfo.password
+            );
             this.event.reply(PurchasingEventName.STATUS, {
               productId: product.productId,
               status: "success",
