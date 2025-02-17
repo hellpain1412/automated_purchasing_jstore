@@ -82,11 +82,11 @@ export class ErSportsDomainService {
 
             await DateTimeUtil.delayRange(1000, 2000);
 
-            await this.purchasingProduct(
-              product,
-              this.userInfo.email,
-              this.userInfo.password
-            );
+            // await this.purchasingProduct(
+            //   product,
+            //   this.userInfo.email,
+            //   this.userInfo.password
+            // );
             this.event.reply(PurchasingEventName.STATUS, {
               productId: product.productId,
               status: "success",
@@ -112,7 +112,9 @@ export class ErSportsDomainService {
   }
 
   logError(error: Error) {
-    const errorMessage = `[${new Date().toISOString()}] ${error}\n`;
+    const errorMessage = `[${new Date().toISOString()}] ${JSON.stringify(
+      error
+    )}\n`;
 
     fs.appendFile(
       this.resultInfo.resultPath + "/errors.log",
