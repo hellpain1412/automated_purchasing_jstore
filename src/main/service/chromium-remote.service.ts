@@ -248,8 +248,7 @@ export class ChromiumCrawlService {
         await nextButton_2.evaluate((el: HTMLElement) => el.click());
         await DateTimeUtil.delayRange(1100, 2000);
         await page?.waitForLoadState("domcontentloaded");
-      } else {
-        await page?.close();
+        await DateTimeUtil.delayRange(4000, 5000);
       }
       await page?.close();
     } catch (error) {
