@@ -12,17 +12,17 @@ export class ChromiumCrawlService {
     chromePath: string,
     isRunInBackground: boolean
   ) {
-    const { profileDirectoryName, profileDirectoryPath } =
-      this.parseUserDirectoryInfo(profilePath);
+    // const { profileDirectoryName, profileDirectoryPath } =
+    //   this.parseUserDirectoryInfo(profilePath);
     // const pathToExtension = `/home/hellpain/.config/google-chrome/Profile 3/Extensions/jonfefokggbliacanjbaiejmbclccocp/1.0.9_0/`;
     try {
       this.context = await playwright.chromium.launchPersistentContext(
-        profileDirectoryPath,
+        profilePath,
         {
           headless: isRunInBackground,
           executablePath: chromePath,
           args: [
-            `--profile-directory=${profileDirectoryName}`,
+            // `--profile-directory=${profileDirectoryName}`,
             "--start-maximized",
             "--lang=en-US",
             "--disable-encryption",

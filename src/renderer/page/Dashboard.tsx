@@ -128,15 +128,14 @@ export function Dashboard() {
       window[PurchasingEventName.EVENT_NAME].stopProcess();
       return;
     }
-
-    setIsSubmitted(true);
-    setIsLoading(true);
-    setIndex(1);
-    setCount(1);
     if (!password || !email || !xlsxPath || !chromePath || !chromeProfilePath) {
       setIsError(true);
       return;
     }
+    setIsSubmitted(true);
+    setIsLoading(true);
+    setIndex(1);
+    setCount(1);
     const requirement: IProcessRequirement = {
       password,
       email,

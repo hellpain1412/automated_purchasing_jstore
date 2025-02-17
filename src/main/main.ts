@@ -1,12 +1,10 @@
 import { app, BrowserWindow, shell } from "electron";
 import path from "node:path";
-import started from "electron-squirrel-startup";
+// import started from "electron-squirrel-startup";
 import { initActions } from "./init";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (started) {
-  app.quit();
-}
+if (require("electron-squirrel-startup")) app.quit();
 
 const createWindow = () => {
   // Create the browser window.
@@ -20,11 +18,6 @@ const createWindow = () => {
       devTools: false,
     },
   });
-
-  // mainWindow.webContents.on("devtools-open-url", function (e, url) {
-  //   e.preventDefault();
-  //   require("electron").shell.openExternal(url);
-  // });
 
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
