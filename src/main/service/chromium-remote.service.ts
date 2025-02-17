@@ -246,13 +246,15 @@ export class ChromiumCrawlService {
           state: "visible",
         });
         await nextButton_2.evaluate((el: HTMLElement) => el.click());
-        await DateTimeUtil.delayRange(1100, 2000);
+
         await page?.waitForLoadState("domcontentloaded");
+        await DateTimeUtil.delayRange(1100, 2000);
       }
     } catch (error) {
       console.log(error);
+      throw error;
     } finally {
-      await page?.close();
+      // await page?.close();
     }
   }
 
