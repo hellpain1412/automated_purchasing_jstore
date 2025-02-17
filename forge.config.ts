@@ -14,7 +14,7 @@ const config: ForgeConfig = {
   rebuildConfig: {},
   makers: [
     new MakerSquirrel({
-      name: "Automated Purchasing JStore",
+      name: "automated_purchasing_jstore",
       setupIcon: "./asset/icon/logo.ico",
     }),
     new MakerZIP({}, ["darwin"]),
