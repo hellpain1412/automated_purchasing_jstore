@@ -8,4 +8,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // build: {
+  //   rollupOptions: {
+  //     external: ["electron", "/home/hellpain/WorkSpace/out-source/automated_purchasing_jstore/index.html"], // Nếu module là Electron hoặc module ngoài
+  //   },
+  // },
 });
