@@ -185,7 +185,7 @@ export function Dashboard() {
     window[PurchasingEventName.EVENT_NAME].endProcess((args: any) => {
       setIsLoading(false);
       setProducts((prev) => {
-        window[CommonEventName.EVENT_NAME].exportXlsx(prev);
+        window[CommonEventName.EVENT_NAME].exportXlsx(prev, resultPath);
         return prev;
       });
     });

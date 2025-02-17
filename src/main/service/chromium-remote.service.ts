@@ -12,8 +12,8 @@ export class ChromiumCrawlService {
     chromePath: string,
     isRunInBackground: boolean
   ) {
-    // const { profileDirectoryName, profileDirectoryPath } =
-    //   this.parseUserDirectoryInfo(profilePath);
+    const { profileDirectoryName, profileDirectoryPath } =
+      this.parseUserDirectoryInfo(profilePath);
     // const pathToExtension = `/home/hellpain/.config/google-chrome/Profile 3/Extensions/jonfefokggbliacanjbaiejmbclccocp/1.0.9_0/`;
     try {
       this.context = await playwright.chromium.launchPersistentContext(
@@ -90,7 +90,7 @@ export class ChromiumCrawlService {
           state: "visible",
         });
         await loginButton.evaluate((el: HTMLElement) => el.click());
-        await DateTimeUtil.delayRange(500, 1200);
+        await DateTimeUtil.delayRange(1000, 1800);
         await this.page?.waitForLoadState("domcontentloaded");
       }
 
@@ -103,6 +103,26 @@ export class ChromiumCrawlService {
   async purchasingProduct(product: Product, email: string, password: string) {
     try {
       const page = await this.context?.newPage();
+      await page?.goto("https://www.er-sports.com/shop/basket.html");
+      await page?.waitForLoadState("domcontentloaded");
+
+      page.on("dialog", async (alert) => {
+        const text = alert.message();
+        console.log(text);
+        await alert.accept();
+      });
+
+      const clearCartButton = page?.locator(
+        `.btn-wrap-back a[href="JavaScript:basket_clear()"]`
+      );
+
+      await clearCartButton.waitFor({
+        state: "visible",
+      });
+      await clearCartButton.evaluate((el: HTMLElement) => el.click());
+      await DateTimeUtil.delayRange(800, 1500);
+      await page?.waitForLoadState("domcontentloaded");
+
       await page?.goto(product.url);
       await page?.waitForLoadState("domcontentloaded");
 
@@ -116,7 +136,7 @@ export class ChromiumCrawlService {
           state: "visible",
         });
         await buyButton.evaluate((el: HTMLElement) => el.click());
-        await DateTimeUtil.delayRange(500, 1300);
+        await DateTimeUtil.delayRange(800, 1500);
         await page?.waitForLoadState("domcontentloaded");
 
         const proceedCheckoutButton = page?.locator(
@@ -126,7 +146,7 @@ export class ChromiumCrawlService {
           state: "visible",
         });
         await proceedCheckoutButton.evaluate((el: HTMLElement) => el.click());
-        await DateTimeUtil.delayRange(500, 1300);
+        await DateTimeUtil.delayRange(800, 1500);
         await page?.waitForLoadState("domcontentloaded");
 
         //Check login form
@@ -158,7 +178,7 @@ export class ChromiumCrawlService {
             state: "visible",
           });
           await loginButton.evaluate((el: HTMLElement) => el.click());
-          await DateTimeUtil.delayRange(500, 1300);
+          await DateTimeUtil.delayRange(1000, 1800);
           await page?.waitForLoadState("domcontentloaded");
         }
 
@@ -176,7 +196,7 @@ export class ChromiumCrawlService {
           state: "visible",
         });
         await noPoint.evaluate((el: HTMLElement) => el.click());
-        await DateTimeUtil.delayRange(500, 1300);
+        await DateTimeUtil.delayRange(800, 1500);
         await page?.waitForLoadState("domcontentloaded");
 
         const deliveryTime = page?.locator(
@@ -186,7 +206,7 @@ export class ChromiumCrawlService {
           state: "visible",
         });
         await deliveryTime.selectOption("18:00-21:00");
-        await DateTimeUtil.delayRange(500, 1300);
+        await DateTimeUtil.delayRange(800, 1500);
         await page?.waitForLoadState("domcontentloaded");
 
         const nextButton = page?.locator(
@@ -196,7 +216,7 @@ export class ChromiumCrawlService {
           state: "visible",
         });
         await nextButton.evaluate((el: HTMLElement) => el.click());
-        await DateTimeUtil.delayRange(500, 1300);
+        await DateTimeUtil.delayRange(800, 1500);
         await page?.waitForLoadState("domcontentloaded");
 
         //Step 3
@@ -207,7 +227,7 @@ export class ChromiumCrawlService {
           state: "visible",
         });
         await payMethod.evaluate((el: HTMLElement) => el.click());
-        await DateTimeUtil.delayRange(500, 1300);
+        await DateTimeUtil.delayRange(800, 1500);
         await page?.waitForLoadState("domcontentloaded");
 
         const deliveryMethod = page?.locator(
@@ -217,7 +237,7 @@ export class ChromiumCrawlService {
           state: "visible",
         });
         await deliveryMethod.evaluate((el: HTMLElement) => el.click());
-        await DateTimeUtil.delayRange(500, 1300);
+        await DateTimeUtil.delayRange(800, 1500);
         await page?.waitForLoadState("domcontentloaded");
 
         const nextButton_2 = page?.locator(`.nextBtnWrap input#next_button`);
@@ -225,7 +245,7 @@ export class ChromiumCrawlService {
           state: "visible",
         });
         await nextButton_2.evaluate((el: HTMLElement) => el.click());
-        await DateTimeUtil.delayRange(500, 1300);
+        await DateTimeUtil.delayRange(800, 1500);
         await page?.waitForLoadState("domcontentloaded");
       } else {
         await page?.close();

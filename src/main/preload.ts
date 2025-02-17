@@ -16,8 +16,8 @@ contextBridge.exposeInMainWorld(CommonEventName.EVENT_NAME, {
   openWarningConfirmDialog: (options: OpenDialogOptions) =>
     ipcRenderer.invoke(CommonEventName.OPEN_WARNING_DIALOG, options),
 
-  exportXlsx: (data: any) =>
-    ipcRenderer.send(CommonEventName.EXPORT_XLSX, data),
+  exportXlsx: (data: any, filePath: string) =>
+    ipcRenderer.send(CommonEventName.EXPORT_XLSX, data, filePath),
 });
 
 contextBridge.exposeInMainWorld(PurchasingEventName.EVENT_NAME, {

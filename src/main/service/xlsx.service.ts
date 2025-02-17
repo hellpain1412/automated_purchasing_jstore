@@ -168,4 +168,15 @@ export class XlsxHandlerService {
       { type: "file" }
     );
   }
+
+  static exportXLSX(JSON_Data: any, filePath: string) {
+    const worksheet = XLSX.utils.json_to_sheet(JSON_Data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Dates");
+    return XLSX.writeFile(
+      workbook,
+      join(filePath, `import-result-products-${Date.now()}.xlsx`),
+      { type: "file" }
+    );
+  }
 }

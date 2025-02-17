@@ -5,7 +5,7 @@ export interface ICommonActionAPI {
   getFilePath: () => Promise<string>;
   openLink: (href: string) => Promise<void>;
   showWarningConfirmDialog: (...args: any) => Promise<any>;
-  exportXlsx: (data: any) => Promise<void>;
+  exportXlsx: (data: any, filePath: string) => Promise<void>;
 }
 
 export interface IPurchasingActionAPI {

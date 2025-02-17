@@ -1,5 +1,6 @@
 import { CommonEventName } from "@/common/constant/event.constant";
 import { BrowserWindow, dialog, ipcMain, shell } from "electron";
+import { XlsxHandlerService } from "../service";
 
 export class CommonEvent {
   static getDirectoryPath(window: BrowserWindow) {
@@ -38,10 +39,16 @@ export class CommonEvent {
   }
 
   static exportXlsx() {
-    ipcMain.on(CommonEventName.EXPORT_XLSX, async (event, data) => {
-      console.log(123, data);
-
-      return data;
+    ipcMain.on(CommonEventName.EXPORT_XLSX, async (event, data, filePath) => {
+      const JSON_Data = data.map((item: any, index: number) => ({
+        STT: index + 1,
+        PRODUCT_ID: item?.productId || "",
+        NAME: item?.name || "",
+        URL: item?.url || "",
+        PRICE: item?.price || "",
+        STATUS: item?.status || "",
+      }));
+      XlsxHandlerService.exportXLSX(JSON_Data, filePath);
     });
   }
 }
