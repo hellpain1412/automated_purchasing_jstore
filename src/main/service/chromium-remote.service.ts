@@ -102,8 +102,8 @@ export class ChromiumCrawlService {
   }
 
   async purchasingProduct(product: Product, email: string, password: string) {
+    const page = await this.context?.newPage();
     try {
-      const page = await this.context?.newPage();
       await page?.goto("https://www.er-sports.com/shop/basket.html");
       await page?.waitForLoadState("domcontentloaded");
 
@@ -248,12 +248,12 @@ export class ChromiumCrawlService {
         await nextButton_2.evaluate((el: HTMLElement) => el.click());
         await DateTimeUtil.delayRange(1100, 2000);
         await page?.waitForLoadState("domcontentloaded");
-        await DateTimeUtil.delayRange(4000, 5000);
       }
-      await page?.close();
     } catch (error) {
       console.log(error);
       throw error;
+    } finally {
+      await page?.close();
     }
   }
 
