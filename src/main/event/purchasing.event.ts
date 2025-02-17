@@ -1,6 +1,6 @@
 import { PurchasingEventName } from "@/common/constant/event.constant";
 import { ipcMain } from "electron";
-import { ErSportsDomainService } from "../service/er-sports.service";
+import { ErSportsDomainService } from "../service";
 
 export class PurchasingEvent {
   constructor() {}
@@ -8,11 +8,29 @@ export class PurchasingEvent {
     ipcMain.on(
       PurchasingEventName.START_PROCESS,
       async (event, processInfo) => {
-        console.log(processInfo);
-        const erSportsDomainService = new ErSportsDomainService();
-        const result = await erSportsDomainService.getProductList();
-
-        event.reply(PurchasingEventName.END_PROCESS, result);
+        const {
+          password,
+          email,
+          xlsxPath,
+          resultPath,
+          chromePath,
+          chromeProfilePath,
+          isRunInBackground,
+        } = processInfo;
+        const erSportsDomainService = new ErSportsDomainService(
+          {
+            password,
+            email,
+          },
+          { xlsxPath, resultPath },
+          {
+            chromePath,
+            chromeProfilePath,
+            isRunInBackground,
+          },
+          event
+        );
+        await erSportsDomainService.stepProcess();
       }
     );
   }

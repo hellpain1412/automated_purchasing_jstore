@@ -1,5 +1,5 @@
 import { CommonEventName } from "@/common/constant/event.constant";
-import { BrowserWindow, dialog, ipcMain } from "electron";
+import { BrowserWindow, dialog, ipcMain, shell } from "electron";
 
 export class CommonEvent {
   static getDirectoryPath(window: BrowserWindow) {
@@ -20,6 +20,13 @@ export class CommonEvent {
     });
   }
 
+  static openLink(window: BrowserWindow) {
+    ipcMain.on(CommonEventName.OPEN_LINK, async (event, href: string) => {
+      event.preventDefault();
+      shell.openExternal(href);
+    });
+  }
+
   static showWarningConfirmDialog(window: BrowserWindow) {
     ipcMain.handle(
       CommonEventName.OPEN_WARNING_DIALOG,
@@ -28,5 +35,13 @@ export class CommonEvent {
         return !response;
       }
     );
+  }
+
+  static exportXlsx() {
+    ipcMain.on(CommonEventName.EXPORT_XLSX, async (event, data) => {
+      console.log(123, data);
+
+      return data;
+    });
   }
 }

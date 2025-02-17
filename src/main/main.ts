@@ -1,12 +1,10 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, shell } from "electron";
 import path from "node:path";
-import started from "electron-squirrel-startup";
+// import started from "electron-squirrel-startup";
 import { initActions } from "./init";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (started) {
-  app.quit();
-}
+if (require("electron-squirrel-startup")) app.quit();
 
 const createWindow = () => {
   // Create the browser window.
@@ -17,6 +15,7 @@ const createWindow = () => {
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
+      devTools: false,
     },
   });
 
@@ -31,6 +30,7 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+
   initActions(mainWindow);
 };
 
