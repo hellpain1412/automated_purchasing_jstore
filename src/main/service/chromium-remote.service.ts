@@ -15,7 +15,7 @@ export class ChromiumCrawlService {
   ) {
     const { profileDirectoryName, profileDirectoryPath } =
       this.parseUserDirectoryInfo(profilePath);
-    // const pathToExtension = `/home/hellpain/.config/google-chrome/Profile 3/Extensions/jonfefokggbliacanjbaiejmbclccocp/1.0.9_0/`;
+    const pathToExtension = `C:\\Users\\PC\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1\\Extensions\\jonfefokggbliacanjbaiejmbclccocp\\1.0.9_0\\`;
     try {
       this.context = await playwright.chromium.launchPersistentContext(
         profilePath,
@@ -29,8 +29,8 @@ export class ChromiumCrawlService {
             "--disable-encryption",
             "--flag-switches-begin",
             "--flag-switches-end",
-            // `--disable-extensions-except=${pathToExtension}`,
-            // `--load-extension=${pathToExtension}`,
+            `--disable-extensions-except=${pathToExtension}`,
+            `--load-extension=${pathToExtension}`,
           ],
           ignoreDefaultArgs: ["--enable-automation"],
           viewport: { width: 1920, height: 1080 },
