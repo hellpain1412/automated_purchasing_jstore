@@ -106,8 +106,12 @@ export class ErSportsDomainService {
     } catch (error) {
       console.log(error);
     } finally {
-      await this.chromeBrowser.endTask();
       this.event.reply(PurchasingEventName.END_PROCESS, products);
+      try {
+        await this.chromeBrowser.endTask();
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
