@@ -264,6 +264,17 @@ export class ChromiumCrawlService {
           "https://www.er-sports.com/ssl/orderconfirm.html"
         );
         await DateTimeUtil.delayRange(1100, 2000);
+
+        //Step 4
+        const confirmBuyButton = page?.locator(
+          `.orderBtn .responsiveDesignOrderButton`
+        );
+        await confirmBuyButton.waitFor({
+          state: "visible",
+        });
+        await confirmBuyButton.evaluate((el: HTMLElement) => el.click());
+        await DateTimeUtil.delayRange(1000, 1500);
+        await page?.waitForLoadState("domcontentloaded");
       }
     } catch (error) {
       console.log(error);
