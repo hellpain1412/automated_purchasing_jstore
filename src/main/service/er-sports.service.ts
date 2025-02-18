@@ -81,11 +81,12 @@ export class ErSportsDomainService {
             });
 
             await DateTimeUtil.delayRange(1000, 2000);
-
+            const page = await this.chromeBrowser.createNewPage();
             await this.purchasingProduct(
               product,
               this.userInfo.email,
-              this.userInfo.password
+              this.userInfo.password,
+              page
             );
             this.event.reply(PurchasingEventName.STATUS, {
               productId: product.productId,
@@ -160,8 +161,13 @@ export class ErSportsDomainService {
     return res;
   }
 
-  async purchasingProduct(product: Product, email: string, password: string) {
-    await this.chromeBrowser.purchasingProduct(product, email, password);
+  async purchasingProduct(
+    product: Product,
+    email: string,
+    password: string,
+    page: any
+  ) {
+    await this.chromeBrowser.purchasingProduct(product, email, password, page);
   }
 
   async openChrome() {

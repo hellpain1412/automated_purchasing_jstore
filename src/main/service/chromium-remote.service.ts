@@ -101,8 +101,17 @@ export class ChromiumCrawlService {
     }
   }
 
-  async purchasingProduct(product: Product, email: string, password: string) {
+  async createNewPage() {
     const page = await this.context?.newPage();
+    return page;
+  }
+
+  async purchasingProduct(
+    product: Product,
+    email: string,
+    password: string,
+    page: playwright.Page
+  ) {
     try {
       await page?.goto("https://www.er-sports.com/shop/basket.html");
       await page?.waitForLoadState("domcontentloaded");
@@ -247,14 +256,15 @@ export class ChromiumCrawlService {
         });
         await nextButton_2.evaluate((el: HTMLElement) => el.click());
 
-        await page?.waitForLoadState("domcontentloaded");
+        await page?.waitForURL(
+          "https://www.er-sports.com/ssl/orderconfirm.html"
+        );
         await DateTimeUtil.delayRange(1100, 2000);
       }
     } catch (error) {
       console.log(error);
       throw error;
     }
-    await page?.close();
   }
 
   parseUserDirectoryInfo(profilePath: string) {
