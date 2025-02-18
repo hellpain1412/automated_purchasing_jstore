@@ -93,6 +93,7 @@ export class ErSportsDomainService {
               status: "success",
             });
             doneProducts.push(product.productId);
+            await this.chromeBrowser.closePage(page);
           } catch (error) {
             this.logError(error);
             console.log(error);

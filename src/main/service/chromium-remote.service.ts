@@ -106,6 +106,10 @@ export class ChromiumCrawlService {
     return page;
   }
 
+  async closePage(page: playwright.Page) {
+    await page?.close();
+  }
+
   async purchasingProduct(
     product: Product,
     email: string,
