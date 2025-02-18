@@ -117,7 +117,7 @@ export class ErSportsDomainService {
 
   logError(error: Error) {
     const errorMessage = `[${new Date().toISOString()}] ${JSON.stringify(
-      error
+      error.stack || error
     )}\n`;
 
     fs.appendFile(
@@ -146,9 +146,7 @@ export class ErSportsDomainService {
 
     products.flat().forEach((product) => {
       sheetData.find((item) => {
-        const isValid = product.name
-          .toLowerCase()
-          .includes(item["PRODUCT_ID"]?.toLowerCase()?.trim());
+        const isValid = product.name.includes(item["PRODUCT_ID"]?.trim());
 
         !doneProducts.includes(item["PRODUCT_ID"]) &&
           isValid &&
