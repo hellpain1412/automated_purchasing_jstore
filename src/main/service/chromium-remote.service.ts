@@ -13,9 +13,9 @@ export class ChromiumCrawlService {
     chromePath: string,
     isRunInBackground: boolean
   ) {
-    const { profileDirectoryName, profileDirectoryPath } =
-      this.parseUserDirectoryInfo(profilePath);
-    const pathToExtension = `C:\\Users\\PC\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1\\Extensions\\jonfefokggbliacanjbaiejmbclccocp\\1.0.9_0\\`;
+    // const { profileDirectoryName, profileDirectoryPath } =
+    //   this.parseUserDirectoryInfo(profilePath);
+    // const pathToExtension = `C:\\Users\\PC\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1\\Extensions\\jonfefokggbliacanjbaiejmbclccocp\\1.0.9_0\\`;
     try {
       this.context = await playwright.chromium.launchPersistentContext(
         profilePath,
@@ -24,16 +24,16 @@ export class ChromiumCrawlService {
           executablePath: chromePath,
           args: [
             // `--profile-directory=${profileDirectoryName}`,
-            "--start-maximized",
+            // "--start-maximized",
             "--lang=en-US",
             "--disable-encryption",
             "--flag-switches-begin",
             "--flag-switches-end",
-            `--disable-extensions-except=${pathToExtension}`,
-            `--load-extension=${pathToExtension}`,
+            // `--disable-extensions-except=${pathToExtension}`,
+            // `--load-extension=${pathToExtension}`,
           ],
           ignoreDefaultArgs: ["--enable-automation"],
-          viewport: { width: 1920, height: 1080 },
+          // viewport: { width: 600, height: 800 },
           // proxy: {
           //   server: "47.74.46.81:8047",
           // },
