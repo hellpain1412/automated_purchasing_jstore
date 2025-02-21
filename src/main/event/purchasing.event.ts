@@ -1,6 +1,6 @@
 import { PurchasingEventName } from "@/common/constant/event.constant";
 import { ipcMain } from "electron";
-import { ErSportsDomainService } from "../service";
+import { CueShopDomainService } from "../service";
 
 export class PurchasingEvent {
   constructor() {}
@@ -17,7 +17,7 @@ export class PurchasingEvent {
           chromeProfilePath,
           isRunInBackground,
         } = processInfo;
-        const erSportsDomainService = new ErSportsDomainService(
+        const erSportsDomainService = new CueShopDomainService(
           {
             password,
             email,

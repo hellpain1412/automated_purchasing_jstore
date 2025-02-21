@@ -28,9 +28,9 @@ export class ScanProductUseCase {
     const products: Product[] = [];
     try {
       const $ = cheerio.load(rawData);
-      $("#r_searchList ul.category-list li .detail").each((index, e) => {
+      $("#r_searchList ul.innerList li .detail").each((index, e) => {
         let name = $(e).find(".name a");
-        let price = $(e).find(".price");
+        let price = $(e).find(".price_ .price_");
         products.push({
           name: name ? name.text() : "",
           url: name ? DETAIL_URL + name.attr("href") : "",
@@ -49,6 +49,7 @@ export class ScanProductUseCase {
       method: "GET",
       credentials: "same-origin",
     });
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

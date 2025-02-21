@@ -13,27 +13,30 @@ export class ChromiumCrawlService {
     chromePath: string,
     isRunInBackground: boolean
   ) {
-    // const { profileDirectoryName, profileDirectoryPath } =
-    //   this.parseUserDirectoryInfo(profilePath);
+    const { profileDirectoryName, profileDirectoryPath } =
+      this.parseUserDirectoryInfo(profilePath);
     // const pathToExtension = `C:\\Users\\PC\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1\\Extensions\\jonfefokggbliacanjbaiejmbclccocp\\1.0.9_0\\`;
+    const pathToExtension = `${profilePath}/Extensions/jonfefokggbliacanjbaiejmbclccocp/1.0.9_0/`;
+    console.log(pathToExtension);
+
     try {
       this.context = await playwright.chromium.launchPersistentContext(
-        profilePath,
+        profileDirectoryPath,
         {
           headless: isRunInBackground,
           executablePath: chromePath,
           args: [
-            // `--profile-directory=${profileDirectoryName}`,
+            `--profile-directory=${profileDirectoryName}`,
             // "--start-maximized",
             "--lang=en-US",
             "--disable-encryption",
             "--flag-switches-begin",
             "--flag-switches-end",
-            // `--disable-extensions-except=${pathToExtension}`,
-            // `--load-extension=${pathToExtension}`,
+            `--disable-extensions-except=${pathToExtension}`,
+            `--load-extension=${pathToExtension}`,
           ],
           ignoreDefaultArgs: ["--enable-automation"],
-          // viewport: { width: 600, height: 800 },
+          viewport: null,
           // proxy: {
           //   server: "47.74.46.81:8047",
           // },
@@ -51,11 +54,11 @@ export class ChromiumCrawlService {
         return;
       }
       this.page = await this.context?.newPage();
-      await this.page?.goto("https://www.er-sports.com/index.html");
+      await this.page?.goto("https://www.cue-shop.jp/index.html");
       await this.page?.waitForLoadState("domcontentloaded");
 
       const loginPage = this.page?.locator(
-        `#header ul li a[href="javascript:ssl_login('login')"]`
+        `#l_guide a[href="javascript:ssl_login('member','&code=%2Findex.html')"]`
       );
 
       const isLogin = await loginPage.isVisible();
