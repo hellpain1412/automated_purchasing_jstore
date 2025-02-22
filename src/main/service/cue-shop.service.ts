@@ -57,58 +57,56 @@ export class CueShopDomainService {
 
       const doneProducts: string[] = [];
       var products = await this.getProductList(sheetData, doneProducts);
-      console.log("products", products);
 
-      // let flag = true;
-      // ipcMain.on(PurchasingEventName.STOP_PROCESS, () => {
-      //   flag = false;
-      // });
-      // const page = await this.chromeBrowser.createNewPage();
-      // while (flag) {
-      //   console.log("doneProducts", doneProducts);
-      //   console.log("flag", flag);
+      let flag = true;
+      ipcMain.on(PurchasingEventName.STOP_PROCESS, () => {
+        flag = false;
+      });
+      const page = await this.chromeBrowser.createNewPage();
+      while (flag) {
+        console.log("doneProducts", doneProducts);
+        console.log("flag", flag);
 
-      //   var products = await this.getProductList(sheetData, doneProducts);
-      //   this.event.reply(PurchasingEventName.GET_PRODUCT_LIST, products);
-      //   for (const product of products) {
-      //     try {
-      //       if (!flag) {
-      //         break;
-      //       }
+        var products = await this.getProductList(sheetData, doneProducts);
+        this.event.reply(PurchasingEventName.GET_PRODUCT_LIST, products);
+        for (const product of products) {
+          try {
+            if (!flag) {
+              break;
+            }
 
-      //       await this.login();
-      //       // this.event.reply(PurchasingEventName.STATUS, {
-      //       //   productId: product.productId,
-      //       //   status: "processing",
-      //       // });
+            await this.login();
+            this.event.reply(PurchasingEventName.STATUS, {
+              productId: product.productId,
+              status: "processing",
+            });
 
-      //       // await DateTimeUtil.delayRange(1000, 2000);
-      //       // await this.purchasingProduct(
-      //       //   product,
-      //       //   this.userInfo.email,
-      //       //   this.userInfo.password,
-      //       //   page
-      //       // );
-      //       // this.event.reply(PurchasingEventName.STATUS, {
-      //       //   productId: product.productId,
-      //       //   status: "success",
-      //       // });
-      //       // doneProducts.push(product.productId);
-      //     } catch (error) {
-      //       this.logError(error);
-      //       console.log(error);
-      //       this.event.reply(PurchasingEventName.STATUS, {
-      //         productId: product.productId,
-      //         status: "retry",
-      //       });
-      //       continue;
-      //     }
-      //   }
-      // }
+            await DateTimeUtil.delayRange(1000, 2000);
+            await this.purchasingProduct(
+              product,
+              this.userInfo.email,
+              this.userInfo.password,
+              page
+            );
+            this.event.reply(PurchasingEventName.STATUS, {
+              productId: product.productId,
+              status: "success",
+            });
+            doneProducts.push(product.productId);
+          } catch (error) {
+            this.logError(error);
+            console.log(error);
+            this.event.reply(PurchasingEventName.STATUS, {
+              productId: product.productId,
+              status: "retry",
+            });
+            continue;
+          }
+        }
+      }
     } catch (error) {
       console.log(error);
     } finally {
-      // this.event.reply(PurchasingEventName.END_PROCESS, []);
       this.event.reply(PurchasingEventName.END_PROCESS, products);
       // try {
       //   await this.chromeBrowser.endTask();

@@ -120,7 +120,7 @@ export class ChromiumCrawlService {
     page: playwright.Page
   ) {
     try {
-      await page?.goto("https://www.er-sports.com/shop/basket.html");
+      await page?.goto("https://www.cue-shop.jp/shop/basket.html");
       await page?.waitForLoadState("domcontentloaded");
 
       page.on("dialog", async (alert) => {
@@ -130,7 +130,7 @@ export class ChromiumCrawlService {
       });
 
       const clearCartButton = page?.locator(
-        `.btn-wrap-back a[href="JavaScript:basket_clear()"]`
+        `.btnBack a[href="JavaScript:basket_clear()"]`
       );
 
       await clearCartButton.waitFor({
@@ -144,7 +144,7 @@ export class ChromiumCrawlService {
       await page?.waitForLoadState("domcontentloaded");
 
       const buyButton = page?.locator(
-        `.item-basket-btn a.btn-basket[href="JavaScript:send('','');"]`
+        `#basketBtn a[href="JavaScript:send('','');"]`
       );
       const isBuyable = await buyButton.isVisible();
       if (isBuyable) {
@@ -157,7 +157,7 @@ export class ChromiumCrawlService {
         await page?.waitForLoadState("domcontentloaded");
 
         const proceedCheckoutButton = page?.locator(
-          `.btn-wrap-order a[href="javascript:sslorder();"]`
+          `.btnOrder a[href="javascript:sslorder();"]`
         );
         await proceedCheckoutButton.waitFor({
           state: "visible",
@@ -168,11 +168,7 @@ export class ChromiumCrawlService {
 
         //Check login form
         const url = page?.url();
-        console.log(url);
-
         const isLogin = url?.includes("login");
-        console.log(isLogin);
-
         if (isLogin) {
           const emailInput = page?.locator(`table.loginform input[name="id"]`);
           await emailInput.waitFor({
@@ -189,14 +185,17 @@ export class ChromiumCrawlService {
           await passwordInput.fill(password);
 
           const loginButton = page?.locator(
-            `div.btn input[onclick="javascript:login_check();"]`
+            `div.btn input[value="ログイン"][onclick="javascript:login_check();"]`
           );
           await loginButton.waitFor({
             state: "visible",
           });
           await loginButton.evaluate((el: HTMLElement) => el.click());
-          await DateTimeUtil.delayRange(1500, 1800);
+          await DateTimeUtil.delayRange(1500, 2000);
           await page?.waitForLoadState("domcontentloaded");
+          await page?.waitForURL(
+            "https://www.cue-shop.jp/ssl/?ssltype=order&db=cueshopjp"
+          );
         }
 
         //Step 2
@@ -222,7 +221,7 @@ export class ChromiumCrawlService {
         await deliveryTime.waitFor({
           state: "visible",
         });
-        await deliveryTime.selectOption("18:00-21:00");
+        await deliveryTime.selectOption("18:00-20:00");
         await DateTimeUtil.delayRange(800, 1500);
         await page?.waitForLoadState("domcontentloaded");
 
@@ -248,12 +247,12 @@ export class ChromiumCrawlService {
         await page?.waitForLoadState("domcontentloaded");
 
         const deliveryMethod = page?.locator(
-          `input.deli_method[value="20130417231515"][name="deli_method"]`
+          `select.efo_real_check[name="repay_method_20180706090509"]`
         );
         await deliveryMethod.waitFor({
           state: "visible",
         });
-        await deliveryMethod.evaluate((el: HTMLElement) => el.click());
+        await deliveryMethod.selectOption("現金支払い");
         await DateTimeUtil.delayRange(800, 1500);
         await page?.waitForLoadState("domcontentloaded");
 
@@ -263,21 +262,19 @@ export class ChromiumCrawlService {
         });
         await nextButton_2.evaluate((el: HTMLElement) => el.click());
 
-        await page?.waitForURL(
-          "https://www.er-sports.com/ssl/orderconfirm.html"
-        );
+        await page?.waitForURL("https://www.cue-shop.jp/ssl/orderconfirm.html");
         await DateTimeUtil.delayRange(1100, 2000);
 
         //Step 4
-        const confirmBuyButton = page?.locator(
-          `.orderBtn .responsiveDesignOrderButton`
-        );
-        await confirmBuyButton.waitFor({
-          state: "visible",
-        });
-        await confirmBuyButton.evaluate((el: HTMLElement) => el.click());
-        await DateTimeUtil.delayRange(1000, 1500);
-        await page?.waitForLoadState("domcontentloaded");
+        // const confirmBuyButton = page?.locator(
+        //   `.orderBtn .responsiveDesignOrderButton`
+        // );
+        // await confirmBuyButton.waitFor({
+        //   state: "visible",
+        // });
+        // await confirmBuyButton.evaluate((el: HTMLElement) => el.click());
+        // await DateTimeUtil.delayRange(1000, 1500);
+        // await page?.waitForLoadState("domcontentloaded");
       }
     } catch (error) {
       console.log(error);
