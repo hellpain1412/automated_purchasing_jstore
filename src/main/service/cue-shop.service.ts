@@ -108,11 +108,11 @@ export class CueShopDomainService {
       console.log(error);
     } finally {
       this.event.reply(PurchasingEventName.END_PROCESS, products);
-      // try {
-      //   await this.chromeBrowser.endTask();
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      try {
+        await this.chromeBrowser.endTask();
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
