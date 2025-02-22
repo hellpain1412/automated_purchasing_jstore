@@ -21,12 +21,12 @@ export class ChromiumCrawlService {
 
     try {
       this.context = await playwright.chromium.launchPersistentContext(
-        profileDirectoryPath,
+        profilePath,
         {
           headless: isRunInBackground,
           executablePath: chromePath,
           args: [
-            `--profile-directory=${profileDirectoryName}`,
+            // `--profile-directory=${profileDirectoryName}`,
             // "--start-maximized",
             "--lang=en-US",
             "--disable-encryption",
