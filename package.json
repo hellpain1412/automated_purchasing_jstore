@@ -1,7 +1,7 @@
 {
-  "name": "automated_purchasing_jstore",
-  "productName": "automated_purchasing_jstore",
-  "version": "1.0.0",
+  "name": "automated_purchasing_cueshop",
+  "productName": "automated_purchasing_cueshop",
+  "version": "1.0.1",
   "description": "My Electron application description",
   "main": ".vite/build/main.js",
   "scripts": {
