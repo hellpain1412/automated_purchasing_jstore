@@ -17,6 +17,8 @@ export class PurchasingEvent {
           chromeProfilePath,
           isRunInBackground,
         } = processInfo;
+        console.log(processInfo);
+        
         const erSportsDomainService = new CueShopDomainService(
           {
             password,
@@ -30,6 +32,7 @@ export class PurchasingEvent {
           },
           event
         );
+
         await erSportsDomainService.stepProcess();
       }
     );

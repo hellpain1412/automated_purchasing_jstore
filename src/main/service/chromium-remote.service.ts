@@ -42,6 +42,10 @@ export class ChromiumCrawlService {
           // },
         }
       );
+
+      const page = await this.context?.newPage();
+      await page?.goto("https://www.cue-shop.jp/shop/logout.html");
+      await page?.waitForLoadState("domcontentloaded");
     } catch (error) {
       console.log(error);
       throw error;
