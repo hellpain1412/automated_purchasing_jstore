@@ -118,7 +118,7 @@ export class CueShopDomainService {
     } catch (error) {
       console.log(error);
     } finally {
-      this.event.reply(PurchasingEventName.END_PROCESS, products);
+      this.event.reply(PurchasingEventName.END_PROCESS, this.userInfo.email);
       try {
         await this.chromeBrowser.endTask();
       } catch (error) {

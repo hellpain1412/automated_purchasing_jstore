@@ -13,7 +13,7 @@ export default function TableStickyHeader({
 }: {
   products: Product[];
   count: number;
-  email: { email: string };
+  email: string;
 }) {
   const openLink = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
@@ -36,7 +36,7 @@ export default function TableStickyHeader({
               fontWeight: "bold",
             }}
           >
-            {email?.email}
+            {email}
           </p>
         </strong>
         <div>
@@ -57,7 +57,7 @@ export default function TableStickyHeader({
         </div>
       </Stack>
 
-      <Sheet sx={{ height: "100%", maxHeight: "70vh", overflow: "auto" }}>
+      <Sheet sx={{ height: "100%", maxHeight: "60vh", overflow: "auto" }}>
         <Table
           aria-label="table with sticky header"
           stickyHeader

@@ -8,6 +8,57 @@ export interface IData {
   sheetData: any[];
 }
 
+function toSafeFilename(input: string, maxLength = 100) {
+  // Tên file bị cấm trong Windows
+  const reservedNames = [
+    "CON",
+    "PRN",
+    "AUX",
+    "NUL",
+    "COM1",
+    "COM2",
+    "COM3",
+    "COM4",
+    "COM5",
+    "COM6",
+    "COM7",
+    "COM8",
+    "COM9",
+    "LPT1",
+    "LPT2",
+    "LPT3",
+    "LPT4",
+    "LPT5",
+    "LPT6",
+    "LPT7",
+    "LPT8",
+    "LPT9",
+  ];
+
+  // Loại bỏ ký tự không hợp lệ
+  let filename = input
+    .replace(/[\x00-\x1f<>:"/\\|?*]/g, "") // Ký tự điều khiển + cấm
+    .replace(/\s+/g, " ") // Nhiều khoảng trắng → 1 khoảng trắng
+    .trim();
+
+  // Cắt độ dài
+  if (filename.length > maxLength) {
+    filename = filename.slice(0, maxLength).trim();
+  }
+
+  // Nếu là tên bị cấm → thêm hậu tố để tránh
+  if (reservedNames.includes(filename.toUpperCase())) {
+    filename += "_file";
+  }
+
+  // Nếu rỗng → đặt tên mặc định
+  if (!filename) {
+    filename = "untitled";
+  }
+
+  return filename;
+}
+
 export class XlsxHandlerService {
   private workbook: XLSX.WorkBook;
   private dataJSON: IData[];
@@ -169,13 +220,18 @@ export class XlsxHandlerService {
     );
   }
 
-  static exportXLSX(JSON_Data: any, filePath: string) {
+  static exportXLSX(JSON_Data: any, filePath: string, email: string) {
     const worksheet = XLSX.utils.json_to_sheet(JSON_Data);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Dates");
+    console.log("Exporting to XLSX file:", filePath, email);
+
     return XLSX.writeFile(
       workbook,
-      join(filePath, `import-result-products-${Date.now()}.xlsx`),
+      join(
+        filePath,
+        toSafeFilename(`${email}-result-${Date.now()}.xlsx`)
+      ),
       { type: "file" }
     );
   }

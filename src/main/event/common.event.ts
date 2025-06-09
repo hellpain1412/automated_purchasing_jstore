@@ -39,16 +39,21 @@ export class CommonEvent {
   }
 
   static exportXlsx() {
-    ipcMain.on(CommonEventName.EXPORT_XLSX, async (event, data, filePath) => {
-      const JSON_Data = data.map((item: any, index: number) => ({
-        STT: index + 1,
-        PRODUCT_ID: item?.productId || "",
-        NAME: item?.name || "",
-        URL: item?.url || "",
-        PRICE: item?.price || "",
-        STATUS: item?.status || "",
-      }));
-      XlsxHandlerService.exportXLSX(JSON_Data, filePath);
+    ipcMain.on(CommonEventName.EXPORT_XLSX, async (event, args) => {
+      console.log("Exporting to XLSX file:", args);
+
+      const { data, resultPath: filePath, email } = args;
+
+      const JSON_Data =
+        data?.map((item: any, index: number) => ({
+          STT: index + 1,
+          PRODUCT_ID: item?.productId || "",
+          NAME: item?.name || "",
+          URL: item?.url || "",
+          PRICE: item?.price || "",
+          STATUS: item?.status || "",
+        })) || [];
+      XlsxHandlerService.exportXLSX(JSON_Data, filePath, email);
     });
   }
 }

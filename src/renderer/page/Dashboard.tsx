@@ -181,7 +181,13 @@ export function Dashboard() {
     window[PurchasingEventName.EVENT_NAME].endProcess((args: any) => {
       setIsLoading(false);
       setProducts((prev) => {
-        window[CommonEventName.EVENT_NAME].exportXlsx(prev, resultPath);
+        console.log("End process", args);
+
+        window[CommonEventName.EVENT_NAME].exportXlsx({
+          data: prev,
+          resultPath,
+          email: args,
+        });
         return prev;
       });
     });
@@ -190,7 +196,7 @@ export function Dashboard() {
       setIsLoading(true);
       console.log("Start task", args);
 
-      setEmail(args);
+      setEmail((prev) => args?.email || "");
     });
   };
 
