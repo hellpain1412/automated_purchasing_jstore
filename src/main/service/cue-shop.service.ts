@@ -55,6 +55,10 @@ export class CueShopDomainService {
         }))
       );
 
+      this.event.reply(PurchasingEventName.START_TASK, {
+        email: this.userInfo.email,
+      });
+
       const doneProducts: string[] = [];
       var products = await this.getProductList(sheetData, doneProducts);
 
@@ -66,13 +70,13 @@ export class CueShopDomainService {
       while (flag) {
         console.log("doneProducts", doneProducts);
         console.log("flag", flag);
-        if(doneProducts?.length){
+        if (doneProducts?.length) {
           flag = false;
-            break;
+          break;
         }
 
         var products = await this.getProductList(sheetData, doneProducts);
-        
+
         this.event.reply(PurchasingEventName.GET_PRODUCT_LIST, products);
         for (const product of products) {
           try {

@@ -32,6 +32,12 @@ contextBridge.exposeInMainWorld(PurchasingEventName.EVENT_NAME, {
       ipcRenderer.removeAllListeners();
       return callback(arg);
     }),
+
+  startTask: (callback: (arg: any) => void) =>
+    ipcRenderer.once(PurchasingEventName.START_TASK, (event, arg) => {
+      return callback(arg);
+    }),
+
   status: (callback: (arg: any) => void) =>
     ipcRenderer.on(PurchasingEventName.STATUS, (event, arg) => callback(arg)),
 

@@ -47,7 +47,7 @@ interface IProcessRequirement {
 
 export function Dashboard() {
   // const [password, setPassword] = React.useState("");
-  // const [email, setEmail] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [xlsxPath, setXlsxPath] = React.useState("");
   const [resultPath, setResultPath] = React.useState("");
   const [chromePath, setChromePath] = React.useState("");
@@ -184,6 +184,13 @@ export function Dashboard() {
         window[CommonEventName.EVENT_NAME].exportXlsx(prev, resultPath);
         return prev;
       });
+    });
+
+    window[PurchasingEventName.EVENT_NAME].startTask((args: any) => {
+      setIsLoading(true);
+      console.log("Start task", args);
+
+      setEmail(args);
     });
   };
 
@@ -520,7 +527,11 @@ export function Dashboard() {
               </Stack>
             </TabPanel>
             <TabPanel value={1}>
-              <TableStickyHeader products={products} count={count} />
+              <TableStickyHeader
+                products={products}
+                count={count}
+                email={email}
+              />
             </TabPanel>
           </Box>
         </Tabs>
