@@ -39,6 +39,10 @@ export class ChromiumCrawlService {
           // },
         }
       );
+
+      const page = await this.context?.newPage();
+      await page?.goto("https://www.er-sports.com/shop/logout.html");
+      await page?.waitForLoadState("domcontentloaded");
     } catch (error) {
       console.log(error);
       throw error;

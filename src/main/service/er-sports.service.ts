@@ -66,6 +66,11 @@ export class ErSportsDomainService {
         console.log("doneProducts", doneProducts);
         console.log("flag", flag);
 
+        if(doneProducts?.length){
+          flag = false;
+            break;
+        }
+
         var products = await this.getProductList(sheetData, doneProducts);
         this.event.reply(PurchasingEventName.GET_PRODUCT_LIST, products);
         for (const product of products) {
@@ -92,6 +97,8 @@ export class ErSportsDomainService {
               status: "success",
             });
             doneProducts.push(product.productId);
+            flag = false;
+            break;
           } catch (error) {
             this.logError(error);
             console.log(error);
