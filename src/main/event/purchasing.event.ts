@@ -17,23 +17,23 @@ export class PurchasingEvent {
           chromeProfilePath,
           isRunInBackground,
         } = processInfo;
-        console.log(processInfo);
-        
-        const erSportsDomainService = new CueShopDomainService(
-          {
-            password,
-            email,
-          },
-          { xlsxPath, resultPath },
-          {
-            chromePath,
-            chromeProfilePath,
-            isRunInBackground,
-          },
-          event
-        );
 
-        await erSportsDomainService.stepProcess();
+        console.log("PurchasingEvent.startProcess", processInfo);
+
+        // const erSportsDomainService = new CueShopDomainService(
+        //   {
+        //     password,
+        //     email,
+        //   },
+        //   { xlsxPath, resultPath },
+        //   {
+        //     chromePath,
+        //     chromeProfilePath,
+        //     isRunInBackground,
+        //   },
+        //   event
+        // );
+        // await erSportsDomainService.stepProcess();
       }
     );
   }
