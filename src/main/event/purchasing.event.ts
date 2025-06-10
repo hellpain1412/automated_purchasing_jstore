@@ -1,6 +1,6 @@
 import { PurchasingEventName } from "@/common/constant/event.constant";
 import { ipcMain } from "electron";
-import { ErSportsDomainService } from "../service";
+import { ErSportsDomainService, XlsxHandlerService } from "../service";
 
 export class PurchasingEvent {
   constructor() {}
@@ -9,28 +9,47 @@ export class PurchasingEvent {
       PurchasingEventName.START_PROCESS,
       async (event, processInfo) => {
         const {
-          password,
-          email,
           xlsxPath,
           resultPath,
           chromePath,
-          chromeProfilePath,
+          chromeProfilePath: accountList,
           isRunInBackground,
         } = processInfo;
-        const erSportsDomainService = new ErSportsDomainService(
-          {
-            password,
-            email,
-          },
-          { xlsxPath, resultPath },
-          {
-            chromePath,
-            chromeProfilePath,
-            isRunInBackground,
-          },
-          event
-        );
-        await erSportsDomainService.stepProcess();
+
+        const Xlsx = XlsxHandlerService.init(accountList);
+        const [res] = Xlsx.getData();
+
+        let stopProcess = false;
+        ipcMain.on(PurchasingEventName.STOP_PROCESS, () => {
+          stopProcess = true;
+        });
+
+        for (let i = 0; i < res.sheetData.length; i++) {
+          const item = res.sheetData[i];
+          if (stopProcess) {
+            break;
+          }
+          const {
+            EMAIL: email,
+            PASSWORD: password,
+            PROFILE_PATH: chromeProfilePath,
+          } = item;
+
+          const erSportsDomainService = new ErSportsDomainService(
+            {
+              password,
+              email,
+            },
+            { xlsxPath, resultPath },
+            {
+              chromePath,
+              chromeProfilePath,
+              isRunInBackground,
+            },
+            event
+          );
+          await erSportsDomainService.stepProcess();
+        }
       }
     );
   }

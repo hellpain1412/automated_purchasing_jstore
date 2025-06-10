@@ -12,6 +12,7 @@ export class PurchasingEventName {
   static START_PROCESS = `${PurchasingEventName.EVENT_NAME}:startProcess`;
   static STOP_PROCESS = `${PurchasingEventName.EVENT_NAME}:stopProcess`;
   static END_PROCESS = `${PurchasingEventName.EVENT_NAME}:endProcess`;
+  static START_TASK = `${PurchasingEventName.EVENT_NAME}:startTask`;
   static STATUS = `${PurchasingEventName.EVENT_NAME}:status`;
   static XLSX_DATA = `${PurchasingEventName.EVENT_NAME}:xlsxData`;
   static GET_PRODUCT_LIST = `${PurchasingEventName.EVENT_NAME}:getProductList`;

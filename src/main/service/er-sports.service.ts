@@ -55,6 +55,10 @@ export class ErSportsDomainService {
         }))
       );
 
+      this.event.reply(PurchasingEventName.START_TASK, {
+        email: this.userInfo.email,
+      });
+
       const doneProducts: string[] = [];
 
       let flag = true;
@@ -66,9 +70,9 @@ export class ErSportsDomainService {
         console.log("doneProducts", doneProducts);
         console.log("flag", flag);
 
-        if(doneProducts?.length){
+        if (doneProducts?.length) {
           flag = false;
-            break;
+          break;
         }
 
         var products = await this.getProductList(sheetData, doneProducts);
@@ -113,7 +117,7 @@ export class ErSportsDomainService {
     } catch (error) {
       console.log(error);
     } finally {
-      this.event.reply(PurchasingEventName.END_PROCESS, products);
+      this.event.reply(PurchasingEventName.END_PROCESS, this.userInfo.email);
       try {
         await this.chromeBrowser.endTask();
       } catch (error) {

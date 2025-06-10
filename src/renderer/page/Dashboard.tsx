@@ -38,8 +38,6 @@ import { Product } from "@/main/use-case";
 import { Stop } from "../icon/Stop";
 
 interface IProcessRequirement {
-  password: string;
-  email: string;
   xlsxPath: string;
   resultPath?: string;
   chromePath: string;
@@ -48,7 +46,7 @@ interface IProcessRequirement {
 }
 
 export function Dashboard() {
-  const [password, setPassword] = React.useState("");
+  // const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [xlsxPath, setXlsxPath] = React.useState("");
   const [resultPath, setResultPath] = React.useState("");
@@ -59,20 +57,20 @@ export function Dashboard() {
   const [products, setProducts] = React.useState<Product[]>([]);
 
   const [isRunInBackground, setIsRunInBackground] = React.useState(true);
-  const [showPassword, setShowPassword] = React.useState(false);
+  // const [showPassword, setShowPassword] = React.useState(false);
   const [isSubmitted, setIsSubmitted] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
     setIsError(false);
-  }, [password, email, xlsxPath, resultPath, chromePath, chromeProfilePath]);
+  }, [xlsxPath, resultPath, chromePath, chromeProfilePath]);
 
   React.useEffect(() => {
-    const email = window.localStorage.getItem("email");
-    email && setEmail(JSON.parse(email));
-    const password = window.localStorage.getItem("password");
-    password && setPassword(JSON.parse(password));
+    // const email = window.localStorage.getItem("email");
+    // email && setEmail(JSON.parse(email));
+    // const password = window.localStorage.getItem("password");
+    // password && setPassword(JSON.parse(password));
     const xlsxPath = window.localStorage.getItem("xlsxPath");
     xlsxPath && setXlsxPath(JSON.parse(xlsxPath));
     const resultPath = window.localStorage.getItem("resultPath");
@@ -85,19 +83,19 @@ export function Dashboard() {
     isRunInBackground && setIsRunInBackground(JSON.parse(isRunInBackground));
   }, []);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  // const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
+  // const handleMouseDownPassword = (
+  //   event: React.MouseEvent<HTMLButtonElement>
+  // ) => {
+  //   event.preventDefault();
+  // };
 
-  const handleMouseUpPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
+  // const handleMouseUpPassword = (
+  //   event: React.MouseEvent<HTMLButtonElement>
+  // ) => {
+  //   event.preventDefault();
+  // };
 
   const handleSelectFile = async () => {
     const path = await window[CommonEventName.EVENT_NAME].getFilePath();
@@ -110,7 +108,7 @@ export function Dashboard() {
   };
 
   const handleChromeProfilePath = async () => {
-    const path = await window[CommonEventName.EVENT_NAME].getDirectoryPath();
+    const path = await window[CommonEventName.EVENT_NAME].getFilePath();
     path && setChromeProfilePath(path);
   };
 
@@ -128,7 +126,7 @@ export function Dashboard() {
       window[PurchasingEventName.EVENT_NAME].stopProcess();
       return;
     }
-    if (!password || !email || !xlsxPath || !chromePath || !chromeProfilePath) {
+    if (!xlsxPath || !chromePath || !chromeProfilePath) {
       setIsError(true);
       return;
     }
@@ -137,8 +135,6 @@ export function Dashboard() {
     setIndex(1);
     setCount(1);
     const requirement: IProcessRequirement = {
-      password,
-      email,
       xlsxPath,
       resultPath,
       chromePath,
@@ -185,9 +181,22 @@ export function Dashboard() {
     window[PurchasingEventName.EVENT_NAME].endProcess((args: any) => {
       setIsLoading(false);
       setProducts((prev) => {
-        window[CommonEventName.EVENT_NAME].exportXlsx(prev, resultPath);
+        console.log("End process", args);
+
+        window[CommonEventName.EVENT_NAME].exportXlsx({
+          data: prev,
+          resultPath,
+          email: args,
+        });
         return prev;
       });
+    });
+
+    window[PurchasingEventName.EVENT_NAME].startTask((args: any) => {
+      setIsLoading(true);
+      console.log("Start task", args);
+
+      setEmail((prev) => args?.email || "");
     });
   };
 
@@ -196,7 +205,7 @@ export function Dashboard() {
     <Stack
       spacing={2}
       sx={{
-        "--hue": Math.min(password.length * 10, 120),
+        // "--hue": Math.min(password.length * 10, 120),
         paddingLeft: 5,
         paddingRight: 5,
         paddingTop: 5,
@@ -279,7 +288,7 @@ export function Dashboard() {
             <TabPanel value={0}>
               <Stack spacing={2}>
                 <React.Fragment>
-                  <Card color="warning">
+                  {/* <Card color="warning">
                     <FormControl>
                       <FormLabel
                         sx={(theme) => ({
@@ -363,7 +372,7 @@ export function Dashboard() {
                     </FormControl>
                   </Card>
 
-                  <Divider />
+                  <Divider /> */}
 
                   <Card color="success">
                     <FormControl>
@@ -479,12 +488,13 @@ export function Dashboard() {
                             theme.vars.palette.primary.plainColor,
                         })}
                       >
-                        Đường dẫn profile:
+                        Danh sách tài khoản:
                       </FormLabel>
                       <Input
                         sx={{ "--Input-decoratorChildHeight": "40px" }}
-                        placeholder="Đường dẫn đến profile chrome…"
-                        type="email"
+                        placeholder="Đường dẫn đến file danh sách tài khoản…"
+                        type="text"
+                        startDecorator={<Person />}
                         required
                         value={chromeProfilePath}
                         error={isSubmitted && chromeProfilePath === ""}
@@ -523,7 +533,11 @@ export function Dashboard() {
               </Stack>
             </TabPanel>
             <TabPanel value={1}>
-              <TableStickyHeader products={products} count={count} />
+              <TableStickyHeader
+                products={products}
+                count={count}
+                email={email}
+              />
             </TabPanel>
           </Box>
         </Tabs>
